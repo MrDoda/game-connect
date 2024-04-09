@@ -45,8 +45,20 @@ export const AdminTopBar = () => {
             <a class="navbar-link">Editor</a>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item">Posts</a>
-              <a class="navbar-item is-selected">Pages</a>
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">Pages</a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item">Create Page</a>
+                </div>
+              </div>
+              <div class="navbar-dropdown">
+                <div class="navbar-item has-dropdown is-hoverable">
+                  <a class="navbar-link">Pages</a>
+                  <div class="navbar-dropdown">
+                    <a class="navbar-item">Create Page</a>
+                  </div>
+                </div>
+              </div>
               <a class="navbar-item">Menus</a>
               <hr class="navbar-divider" />
               <a class="navbar-item">Report an issue</a>

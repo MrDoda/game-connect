@@ -1,14 +1,24 @@
+import { ComboBox } from './ComboBox.tsx'
+
 export const CreateNewPage = () => {
   return (
     <section class="box">
       <h1 class="title">Create new Page</h1>
       <div class="field">
-        <label class="label">Title</label>
         <div class="control">
           <input
             class="input is-info"
             type="text"
             placeholder="Your Title goes here"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input
+            class="input is-flex"
+            type="text"
+            placeholder="Page URL eg. /about"
           />
         </div>
       </div>
@@ -59,19 +69,7 @@ export const CreateNewPage = () => {
       </div>
 
       <div class="is-flex">
-        <div class="field">
-          <div class="control">
-            <label class="label">Choose a Menu</label>
-
-            <div class="select is-rounded">
-              <select>
-                <option>Main Menu</option>
-                <option>Bottom Menu</option>
-                <option>Left Panel Menu</option>
-              </select>
-            </div>
-          </div>
-        </div>
+        <ComboBox />
 
         <div class="field">
           <div class="control">
@@ -87,12 +85,14 @@ export const CreateNewPage = () => {
         </div>
       </div>
 
-      <button class="button pl-5 is-primary">
-        <span class="icon pl-2 pr-5">
-          <i class="fa-solid fa-floppy-disk"></i>
-        </span>
-        Publish
-      </button>
+      <div class="is-fullwidth is-flex is-justify-content-end">
+        <button class="button pl-5 is-primary">
+          <span class="icon pl-2 pr-5">
+            <i class="fa-solid fa-floppy-disk"></i>
+          </span>
+          Publish
+        </button>
+      </div>
     </section>
   )
 }

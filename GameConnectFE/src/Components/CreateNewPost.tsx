@@ -3,13 +3,24 @@ export const CreateNewPost = () => {
     <section class="box">
       <h1 class="title">Create new Post</h1>
       <div class="field">
-        <label class="label">Title</label>
         <div class="control">
           <input
             class="input is-info"
             type="text"
             placeholder="Your Title goes here"
           />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="label">Select Page</label>
+          <div class="select is-rounded">
+            <select>
+              <option>Page 1</option>
+              <option>Page 2</option>
+              <option>Page 3</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="box">
@@ -57,12 +68,14 @@ export const CreateNewPost = () => {
           ></textarea>
         </div>
       </div>
-      <button class="button pl-5 is-primary">
-        <span class="icon pl-2 pr-5">
-          <i class="fa-solid fa-floppy-disk"></i>
-        </span>
-        Publish
-      </button>
+      <div class="is-fullwidth is-flex is-justify-content-end">
+        <button class="button pl-5 is-primary">
+          <span class="icon pl-2 pr-5">
+            <i class="fa-solid fa-floppy-disk"></i>
+          </span>
+          Publish
+        </button>
+      </div>
     </section>
   )
 }
