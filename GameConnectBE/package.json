@@ -1,0 +1,25 @@
+{
+  "name": "gameconnectbe",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "build": "tsc && cp -r src/public dist/public && cp src/.env dist/.env"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "16.4.5",
+    "express": "4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.21",
+    "@types/node": "20.12.6",
+    "nodemon": "^3.1.0",
+    "prettier": "3.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "5.4.4"
+  }
+}
