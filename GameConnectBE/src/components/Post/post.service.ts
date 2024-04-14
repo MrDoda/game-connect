@@ -15,10 +15,10 @@ export const PostService = {
         pageId,
       })
 
-      res.status(201).send(newPost)
+      return res.status(201).send(newPost)
     } catch (error) {
       console.error('[ERROR] Failed to create post:', error)
-      res.status(500).send({ message: 'Failed to create post' })
+      return res.status(500).send({ message: 'Failed to create post' })
     }
   },
 
@@ -33,20 +33,22 @@ export const PostService = {
       })
 
       if (posts.length > 0) {
-        res.send(posts)
+        return res.send(posts)
       } else {
-        res.status(404).send({ message: 'No posts found for the given owner' })
+        return res
+          .status(404)
+          .send({ message: 'No posts found for the given owner' })
       }
     } catch (error) {
       console.error('[ERROR] Failed to retrieve posts:', error)
-      res.status(500).send({ message: 'Error retrieving posts' })
+      return res.status(500).send({ message: 'Error retrieving posts' })
     }
   },
 
   getPostsByPageId: async (req: Express.Request, res: Express.Response) => {
     const pageId = parseInt(req.params.pageId)
     if (!pageId) {
-      return res.status(400).json({ message: 'Invalid page ID provided' })
+      return res.status(400).send({ message: 'Invalid page ID provided' })
     }
 
     try {
@@ -57,13 +59,15 @@ export const PostService = {
       })
 
       if (posts.length > 0) {
-        res.json(posts)
+        return res.send(posts)
       } else {
-        res.status(404).send({ message: 'No posts found for the given page' })
+        return res
+          .status(404)
+          .send({ message: 'No posts found for the given page' })
       }
     } catch (error) {
       console.error('[ERROR] Failed to retrieve posts by page:', error)
-      res.status(500).send({ message: 'Error retrieving posts by page' })
+      return res.status(500).send({ message: 'Error retrieving posts by page' })
     }
   },
 }

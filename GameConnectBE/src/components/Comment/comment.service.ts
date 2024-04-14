@@ -14,17 +14,17 @@ export const CommentService = {
         ownerId,
       })
 
-      res.status(201).send(newComment)
+      return res.status(201).send(newComment)
     } catch (error) {
       console.error('[ERROR] Failed to create comment:', error)
-      res.status(500).send({ message: 'Failed to create comment' })
+      return res.status(500).send({ message: 'Failed to create comment' })
     }
   },
 
   getCommentsByPostId: async (req: Express.Request, res: Express.Response) => {
     const postId = parseInt(req.params.postId)
     if (!postId) {
-      return res.status(400).json({ message: 'Invalid post ID provided' })
+      return res.status(400).send({ message: 'Invalid post ID provided' })
     }
 
     try {
@@ -35,15 +35,15 @@ export const CommentService = {
       })
 
       if (comments.length > 0) {
-        res.json(comments)
+        return res.send(comments)
       } else {
-        res
+        return res
           .status(404)
           .send({ message: 'No comments found for the given post' })
       }
     } catch (error) {
       console.error('[ERROR] Failed to retrieve comments:', error)
-      res.status(500).send({ message: 'Error retrieving comments' })
+      return res.status(500).send({ message: 'Error retrieving comments' })
     }
   },
 }

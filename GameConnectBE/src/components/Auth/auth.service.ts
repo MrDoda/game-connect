@@ -10,10 +10,8 @@ export const AuthService = {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ message: 'Email and password are required' })
+        .send({ message: 'Email and password are required' })
     }
-
-    const encryptedPassword = AuthService.hashPassword(password)
 
     const user = await UserService.getUserByEmail(email)
 

@@ -41,14 +41,14 @@ export const MenuItemService = {
 
       await transaction.commit()
 
-      res.status(201).send(newMenuItem)
+      return res.status(201).send(newMenuItem)
     } catch (error) {
       await transaction.rollback()
       console.error(
         '[ERROR] Failed to create MenuItem with adjusted order:',
         error
       )
-      res
+      return res
         .status(500)
         .send({ message: 'Failed to create MenuItem with adjusted order' })
     }
@@ -62,10 +62,10 @@ export const MenuItemService = {
         where: { ownerId },
       })
 
-      res.send(menuItems)
+      return res.send(menuItems)
     } catch (error) {
       console.error('[ERROR] Unable to retrieve menu items:', error)
-      res.status(500).send({ message: 'Error retrieving menu items' })
+      return res.status(500).send({ message: 'Error retrieving menu items' })
     }
   },
 }

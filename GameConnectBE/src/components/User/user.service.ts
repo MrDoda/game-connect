@@ -39,5 +39,7 @@ export const UserService = {
     if (req.user) {
       return res.send(req.user)
     }
+
+    return res.status(404).send({ message: 'User not found' })
   },
 }
