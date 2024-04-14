@@ -3,12 +3,11 @@ import { ResultPromise } from '../../types/common.types'
 import type Express from 'express'
 
 export const UserService = {
-  getUserByEmailAndPassword: async (email: string, password: string) => {
+  getUserByEmail: async (email: string) => {
     try {
       return await User.findOne({
         where: {
           email,
-          password,
         },
       })
     } catch (error) {

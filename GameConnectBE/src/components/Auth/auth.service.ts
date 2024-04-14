@@ -1,6 +1,7 @@
 import type Express from 'express'
 import { UserService } from '../User/user.service'
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
 export const AuthService = {
   login: async (req: Express.Request, res: Express.Response) => {
@@ -12,15 +13,16 @@ export const AuthService = {
         .json({ message: 'Email and password are required' })
     }
 
-    const encryptedPassword = `encryptedPswrd:${password}`
+    const encryptedPassword = AuthService.hashPassword(password)
 
-    const user = await UserService.getUserByEmailAndPassword(
-      email,
-      encryptedPassword
-    )
+    const user = await UserService.getUserByEmail(email)
+
+    if (!user || !AuthService.verifyPassword(password, user.password)) {
+      return res.status(401).send({ message: 'Invalid email or password' })
+    }
 
     if (user) {
-      const token = jwt.sign(user, process.env.JWT_SECRET || 'secret', {
+      const token = jwt.sign(user.get(), process.env.JWT_SECRET || 'secret', {
         expiresIn: '24h',
       })
 
@@ -33,7 +35,7 @@ export const AuthService = {
   register: async (req: Express.Request, res: Express.Response) => {
     const { password, ...user } = req.body
 
-    user.password = `encryptedPswrd:${password}`
+    user.password = AuthService.hashPassword(password)
     const [errorType, newUser] = await UserService.createUser(user)
 
     if (errorType) {
@@ -45,5 +47,16 @@ export const AuthService = {
     }
 
     return res.status(500).send({ message: 'Error creating user' })
+  },
+
+  hashPassword: (password: string) => {
+    return bcrypt.hashSync(process.env.SALT + password + process.env.PEPPER, 10)
+  },
+
+  verifyPassword: (password: string, hash: string) => {
+    return bcrypt.compareSync(
+      process.env.SALT + password + process.env.PEPPER,
+      hash
+    )
   },
 }
