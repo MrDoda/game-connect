@@ -20,7 +20,8 @@ export const AuthService = {
     }
 
     if (user) {
-      const token = jwt.sign(user.get(), process.env.JWT_SECRET || 'secret', {
+      const { password, ...userToken } = user.get()
+      const token = jwt.sign(userToken, process.env.JWT_SECRET || 'secret', {
         expiresIn: '24h',
       })
 

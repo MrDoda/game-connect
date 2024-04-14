@@ -3,4 +3,4 @@ import { UserService } from './user.service'
 
 export const userRouter = Router()
 
-userRouter.get('/me', (req, res) => UserService.getLoggedUser)
+userRouter.get('/me', UserService.getLoggedUser)
