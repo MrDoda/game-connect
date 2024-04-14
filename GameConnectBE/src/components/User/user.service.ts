@@ -38,7 +38,7 @@ export const UserService = {
 
   getLoggedUser: (req: Express.Request, res: Express.Response) => {
     if (req.user) {
-      return res.json(req.user)
+      return res.send(req.user)
     }
   },
 }
