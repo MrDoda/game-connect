@@ -16,7 +16,9 @@
     "express": "4.19.2",
     "jsonwebtoken": "9.0.2",
     "mysql2": "3.9.4",
-    "sequelize": "^6.37.3"
+    "openai": "4.33.1",
+    "openai-gpt-token-counter": "1.1.1",
+    "sequelize": "6.37.3"
   },
   "devDependencies": {
     "@types/bcrypt": "5.0.2",

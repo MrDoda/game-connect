@@ -1,84 +1,91 @@
-html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All About Dogs</title>
+    <title>Obsidian Studio</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
+            background: #1a1a1a;
+            color: white;
         }
         header {
-            background-color: #77c9d4;
-            color: white;
-            padding: 20px 0;
+            background: #141414;
+            padding: 20px 40px;
             text-align: center;
         }
         main {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        article {
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #333;
-        }
-        p, li {
-            color: #666;
-        }
-        ul {
+        h1, h2 {
             margin: 0;
-            padding: 0 20px;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
+        .description {
+            text-align: center;
+            margin-top: 20px;
+        }
+        footer {
+            background: #141414;
+            color: #ccc;
+            text-align: center;
+            padding: 10px 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .game-list {
+            display: flex;
+            flex-direction: column;
+            margin-top: 40px;
+        }
+        .game-item {
+            background: #262626;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .game-title {
+            font-size: 20px;
+            color: #f2f2f2;
+        }
+        .comment-section {
+            padding: 20px;
+            margin-top: 20px;
+            background: #333;
+            width: 80%;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 <header>
-    <h1>All About Dogs</h1>
+    <h1>Welcome to Obsidian Studio</h1>
+    <h2>Innovators in Gaming Simulations</h2>
 </header>
 <main>
-    <article>
-        <h2>What are Dogs?</h2>
-        <p>Dogs (Canis lupus familiaris) are domesticated mammals, not natural wild animals. They were originally bred from wolves. They have been bred by humans for a long time, and were the first animals ever to be domesticated. Today, some dogs are used as pets, others are used to help humans do their work. They are a popular pet because they are usually playful, friendly, loyal and listen to humans.</p>
-    </article>
-
-    <article>
-        <h2>Different Breeds</h2>
-        <p>There are hundreds of different dog breeds, each with their own unique characteristics and appearance. Some of the most popular breeds include Labrador Retrievers, German Shepherds, and Bulldogs.</p>
-        <ul>
-            <li>Labrador Retrievers: Known for their kindness, loyalty, and friendly nature.</li>
-            <li>German Shepherds: Noted for their intelligence, courage, and versatility.</li>
-            <li>Bulldogs: Recognized for their distinctive wrinkly face and strong, stocky build.</li>
-        </ul>
-    </article>
-
-    <article>
-        <h2>Caring for Dogs</h2>
-        <p>Taking care of a dog involves providing its basic needs, such as food, water, shelter, exercise, and veterinary care. It is also important to provide training and socialization to ensure that they become well-behaved canine citizens.</p>
-    </article>
-
-    <article>
-        <h2>Fun Facts About Dogs</h2>
-        <ul>
-            <li>Dogs have an extraordinary sense of smell. They can detect odors at concentrations nearly 100 million times lower than humans can.</li>
-            <li>The Basenji dog is known as the "barkless dog" due to its unique vocal cords that produce a sound similar to a yodel.</li>
-            <li>Dogs have been man's best friend for about 15,000 years.</li>
-        </ul>
-    </article>
+    <div class="description">
+        <p>At Obsidian Studio, we delve deep into creating immersive simulation experiences that captivate and inspire. Join us on a journey through incredible virtual worlds.</p>
+    </div>
+    <div class="game-list">
+        <div class="game-item">
+            <h2 class="game-title">Flight Ace Simulator</h2>
+            <p>Take to the skies with precision-crafted flight models and explore breathtaking landscapes.</p>
+        </div>
+        <div class="game-item">
+            <h2 class="game-title">Sea Explorer Elite</h2>
+            <p>Discover the unbound mysteries of the ocean in our advanced maritime simulation.</p>
+        </div>
+    </div>
+    <div id="comment-section" class="comment-section"></div>
 </main>
+<footer>
+    <p>© 2023 Obsidian Studio. All rights reserved.</p>
+</footer>
 </body>
 </html>
