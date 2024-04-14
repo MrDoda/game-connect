@@ -49,7 +49,7 @@ Page.init(
     },
     ownerId: {
       type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'User',
         key: 'id',

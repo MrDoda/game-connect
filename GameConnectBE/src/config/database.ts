@@ -1,4 +1,7 @@
 import { Sequelize } from 'sequelize'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export class Database {
   private static instance: Sequelize | null = null
@@ -7,11 +10,11 @@ export class Database {
   public static getInstance(): Sequelize {
     if (!Database.instance) {
       Database.instance = new Sequelize(
-        process.env.DB_NAME!,
-        process.env.DB_USER!,
+        process.env.DB_SCHEMA_NAME!,
+        process.env.DB_USERNAME!,
         process.env.DB_PASS,
         {
-          host: process.env.DB_HOST,
+          host: process.env.DB_HOSTNAME,
           dialect: 'mysql',
           pool: {
             max: 10,
@@ -23,5 +26,14 @@ export class Database {
       )
     }
     return Database.instance
+  }
+
+  public static async testConnection(): Promise<void> {
+    try {
+      await Database.getInstance().authenticate()
+      console.log('Connection has been established successfully.')
+    } catch (error) {
+      console.error('Unable to connect to the database:', error)
+    }
   }
 }

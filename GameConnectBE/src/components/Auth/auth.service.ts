@@ -34,7 +34,11 @@ export const AuthService = {
     const { password, ...user } = req.body
 
     user.password = `encryptedPswrd:${password}`
-    const newUser = await UserService.createUser(user)
+    const [errorType, newUser] = await UserService.createUser(user)
+
+    if (errorType) {
+      return res.status(400).send(errorType)
+    }
 
     if (newUser) {
       return res.status(201).send({ message: 'User created successfully' })
