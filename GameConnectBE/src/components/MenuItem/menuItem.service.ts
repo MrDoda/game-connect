@@ -56,11 +56,7 @@ export const MenuItemService = {
 
   getMenuItems: async (req: Express.Request, res: Express.Response) => {
     try {
-      const ownerId = req.user?.id
-
-      const menuItems = await MenuItem.findAll({
-        where: { ownerId },
-      })
+      const menuItems = await MenuItem.findAll()
 
       return res.send(menuItems)
     } catch (error) {

@@ -5,3 +5,4 @@ export const pageRouter = Router()
 
 pageRouter.post('/', PageService.createPage)
 pageRouter.get('/', PageService.getPages)
+pageRouter.get('/url/', PageService.getPageByURL)

@@ -1,6 +1,5 @@
 import type Express from 'express'
 import Page from './page.model'
-import User from '../User/user.model'
 
 export const PageService = {
   createPage: async (req: Express.Request, res: Express.Response) => {
@@ -15,25 +14,36 @@ export const PageService = {
         ownerId,
       })
 
-      res.status(201).send(newPage)
+      return res.status(201).send(newPage)
     } catch (error) {
       console.error('[ERROR] Unable to create page:', error)
-      res.status(500).send({ message: 'Error creating new page' })
+      return res.status(500).send({ message: 'Error creating new page' })
     }
   },
 
   getPages: async (req: Express.Request, res: Express.Response) => {
     try {
-      const ownerId = req.user?.id
+      const pages = await Page.findAll()
 
-      const pages = await Page.findAll({
-        where: { ownerId },
-      })
-
-      res.send(pages)
+      return res.send(pages)
     } catch (error) {
       console.error('[ERROR] Unable to retrieve pages:', error)
-      res.status(500).send({ message: 'Error retrieving pages' })
+      return res.status(500).send({ message: 'Error retrieving pages' })
+    }
+  },
+
+  getPageByURL: async (req: Express.Request, res: Express.Response) => {
+    try {
+      const url = req.query.url
+      const page = await Page.findOne({
+        where: {
+          url,
+        },
+      })
+      return res.send(page)
+    } catch (error) {
+      console.error('[ERROR] Unable to retrieve pages:', error)
+      return res.status(500).send({ message: 'Error retrieving page by url' })
     }
   },
 }

@@ -24,13 +24,7 @@ export const PostService = {
 
   getPosts: async (req: Express.Request, res: Express.Response) => {
     try {
-      const ownerId = req.user?.id
-
-      const posts = await Post.findAll({
-        where: {
-          ownerId: ownerId,
-        },
-      })
+      const posts = await Post.findAll()
 
       if (posts.length > 0) {
         return res.send(posts)
@@ -68,6 +62,29 @@ export const PostService = {
     } catch (error) {
       console.error('[ERROR] Failed to retrieve posts by page:', error)
       return res.status(500).send({ message: 'Error retrieving posts by page' })
+    }
+  },
+
+  getPostById: async (req: Express.Request, res: Express.Response) => {
+    const postId = parseInt(req.params.postId)
+
+    if (!postId) {
+      return res.status(400).send({ message: 'Invalid post ID provided' })
+    }
+
+    try {
+      const post = await Post.findByPk(postId)
+
+      if (post) {
+        return res.send(post)
+      } else {
+        return res
+          .status(404)
+          .send({ message: 'No post found for the given ID' })
+      }
+    } catch (error) {
+      console.error('[ERROR] Failed to retrieve post by ID:', error)
+      return res.status(500).send({ message: 'Error retrieving post by ID' })
     }
   },
 }
