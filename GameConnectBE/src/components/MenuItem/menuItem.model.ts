@@ -1,29 +1,15 @@
 import { Model, DataTypes } from 'sequelize'
-import User from '../User/user.model'
-import Page from '../Page/page.model'
 import { Database } from '../../config/database'
 
 class MenuItem extends Model {
   public id!: number
-  public pageId!: number | null // This can be null if not linked to a Page
+  public pageId!: number | null
   public ownerId!: number
-  public customUrl!: string | null // This can be null
+  public customUrl!: string | null
   public name!: string
   public menuLocation!: string
   public orderNumber!: number
   public created!: Date
-
-  public static associate() {
-    MenuItem.belongsTo(User, {
-      foreignKey: 'ownerId',
-      as: 'owner',
-    })
-
-    MenuItem.belongsTo(Page, {
-      foreignKey: 'pageId',
-      as: 'page',
-    })
-  }
 }
 
 MenuItem.init(

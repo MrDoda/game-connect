@@ -10,18 +10,6 @@ class Post extends Model {
   public ownerId!: number
   public pageId!: number
   public created!: Date
-
-  public static associate() {
-    Post.belongsTo(User, {
-      foreignKey: 'ownerId',
-      as: 'owner',
-    })
-
-    Post.belongsTo(Page, {
-      foreignKey: 'pageId',
-      as: 'page',
-    })
-  }
 }
 
 Post.init(

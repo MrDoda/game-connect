@@ -16,27 +16,54 @@ User.init(
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      validate: {
+        len: [0, 255],
+        isString: (value: any) => {
+          if (typeof value === 'string') throw new Error('URL must be a string')
+        },
+      },
     },
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
       unique: true,
+      validate: {
+        len: [0, 255],
+        isString: (value: any) => {
+          if (typeof value === 'string') throw new Error('URL must be a string')
+        },
+        isEmail: true,
+      },
     },
     password: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      validate: {
+        len: [0, 255],
+        isString: (value: any) => {
+          if (typeof value === 'string') throw new Error('URL must be a string')
+        },
+      },
     },
     role: {
       type: DataTypes.STRING(255),
       allowNull: true,
+      validate: {
+        len: [0, 255],
+        isString: (value: any) => {
+          if (typeof value === 'string') throw new Error('URL must be a string')
+        },
+      },
     },
     created: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
+      allowNull: true,
     },
   },
   {

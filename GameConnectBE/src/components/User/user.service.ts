@@ -1,6 +1,9 @@
 import User from './user.model'
 import { ResultPromise } from '../../types/common.types'
 import type Express from 'express'
+import { getErrorMessageFromSequelize } from '../../utils/getErrorMessageFromSequelize'
+import { ValidationError } from 'sequelize'
+import { ERROR_PREFIXES } from '../../constants/errorPrefixes'
 
 export const UserService = {
   getUserByEmail: async (email: string) => {
@@ -17,29 +20,54 @@ export const UserService = {
 
   createUser: async (user: Partial<User>): ResultPromise<User> => {
     try {
-      if (!user?.email) {
-        return [{ message: 'Email is required' }, null]
-      }
-
-      const foundUser = await User.findOne({ where: { email: user?.email } })
-
-      if (foundUser) {
-        return [{ message: 'Email already exists' }, null]
-      }
-
       return [null, await User.create(user)]
-    } catch (error) {
-      console.error('[ERROR]UserService.createUser', error)
+    } catch (error: ValidationError | any) {
+      console.error('[USER_ERROR]UserService.createUser', error)
+      return [
+        getErrorMessageFromSequelize(
+          error,
+          `Error creating user`,
+          ERROR_PREFIXES.USER
+        ),
+        null,
+      ]
     }
-
-    return [{ message: 'Error creating user' }, null]
   },
 
-  getLoggedUser: (req: Express.Request, res: Express.Response) => {
+  getLoggedUser: async (req: Express.Request, res: Express.Response) => {
     if (req.user) {
-      return res.send(req.user)
+      try {
+        const loggedUser = await User.findOne({
+          attributes: { exclude: ['password'] },
+          where: {
+            id: req.user.id,
+            email: req.user.email,
+          },
+        })
+
+        if (!loggedUser) {
+          return res
+            .status(404)
+            .send({ message: `${ERROR_PREFIXES.USER} User not found` })
+        }
+
+        return res.send(loggedUser)
+      } catch (error: ValidationError | any) {
+        console.error('[USER_ERROR]UserService.createUser', error)
+        return res
+          .status(400)
+          .send(
+            getErrorMessageFromSequelize(
+              error,
+              `Error getting user`,
+              ERROR_PREFIXES.USER
+            )
+          )
+      }
     }
 
-    return res.status(404).send({ message: 'User not found' })
+    return res
+      .status(404)
+      .send({ message: `${ERROR_PREFIXES.USER} User not found` })
   },
 }

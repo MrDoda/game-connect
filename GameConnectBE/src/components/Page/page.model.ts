@@ -9,13 +9,6 @@ class Page extends Model {
   public url!: string
   public ownerId!: number
   public created!: Date
-
-  public static associate() {
-    Page.belongsTo(User, {
-      foreignKey: 'ownerId',
-      as: 'owner',
-    })
-  }
 }
 
 Page.init(
@@ -29,14 +22,20 @@ Page.init(
       type: DataTypes.TEXT('long'),
       allowNull: false,
       validate: {
-        notEmpty: { msg: 'Content must not be empty' },
+        len: [0, 4294967295],
+        isString: (value: any) => {
+          if (typeof value === 'string') throw new Error('URL must be a string')
+        },
       },
     },
     title: {
       type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
-        notEmpty: { msg: 'Title must not be empty' },
+        len: [0, 255],
+        isString: (value: any) => {
+          if (typeof value === 'string') throw new Error('URL must be a string')
+        },
       },
     },
     url: {
@@ -44,7 +43,16 @@ Page.init(
       allowNull: false,
       unique: true,
       validate: {
-        notEmpty: { msg: 'URL must not be empty' },
+        len: [0, 255],
+        isString: (value: any) => {
+          if (typeof value === 'string') throw new Error('URL must be a string')
+        },
+        isUrlPath: (value: any) => {
+          if (!/^\/[A-Za-z0-9\-_\/]*$/.test(value))
+            throw new Error(
+              'URL path is invalid. Only alphanumeric characters, hyphens, underscores, and slashes are allowed.'
+            )
+        },
       },
     },
     ownerId: {
@@ -69,7 +77,5 @@ Page.init(
     timestamps: false,
   }
 )
-
-Page.associate()
 
 export default Page

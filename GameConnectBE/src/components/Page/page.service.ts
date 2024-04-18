@@ -1,10 +1,13 @@
 import type Express from 'express'
 import Page from './page.model'
+import { MenuItemService } from '../MenuItem/menuItem.service'
+import { getErrorMessageFromSequelize } from '../../utils/getErrorMessageFromSequelize'
+import { ValidationError } from 'sequelize'
 
 export const PageService = {
   createPage: async (req: Express.Request, res: Express.Response) => {
     try {
-      const { content, title, url, menuItem } = req.body
+      const { content, title, url } = req.body
       const ownerId = req.user?.id
 
       const newPage = await Page.create({
@@ -15,9 +18,9 @@ export const PageService = {
       })
 
       return res.status(201).send(newPage)
-    } catch (error) {
+    } catch (error: ValidationError | any) {
       console.error('[ERROR] Unable to create page:', error)
-      return res.status(500).send({ message: 'Error creating new page' })
+      return res.status(400).send(getErrorMessageFromSequelize(error))
     }
   },
 
@@ -41,9 +44,9 @@ export const PageService = {
         },
       })
       return res.send(page)
-    } catch (error) {
+    } catch (error: ValidationError | any) {
       console.error('[ERROR] Unable to retrieve pages:', error)
-      return res.status(500).send({ message: 'Error retrieving page by url' })
+      return res.status(500).send(getErrorMessageFromSequelize(error))
     }
   },
 }

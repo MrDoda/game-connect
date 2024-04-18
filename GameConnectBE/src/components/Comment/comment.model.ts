@@ -5,15 +5,9 @@ import { Database } from '../../config/database'
 class Comment extends Model {
   public id!: number
   public content!: string
+  public postId!: number
   public ownerId!: number
   public created!: Date
-
-  public static associate() {
-    Comment.belongsTo(User, {
-      foreignKey: 'ownerId',
-      as: 'owner',
-    })
-  }
 }
 
 Comment.init(
@@ -32,6 +26,14 @@ Comment.init(
       allowNull: false,
       references: {
         model: 'User',
+        key: 'id',
+      },
+    },
+    postId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+      references: {
+        model: 'Post',
         key: 'id',
       },
     },
