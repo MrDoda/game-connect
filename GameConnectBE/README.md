@@ -1,6 +1,4 @@
 # GAME CONNECT PLATFORM
-
-Backend app in `/GameConnectBE` folder
 ## GameConnect Platform Backend app
 
 Typescript
@@ -16,5 +14,3 @@ Sequelize ORM
 ### Running the app
 1. Run `npm run dev` to start the server in development mode
 2. Run `npm run build` to build the app
-
-### Please Ignore this for now, as the Front End was done just to save time with the ``Wireframes``
