@@ -1,25 +1,117 @@
 import OpenAI from 'openai'
 import type Express from 'express'
 import openaiTokenCounter from 'openai-gpt-token-counter'
+import { prompts } from './openai.prompts'
+import { normalizePrompts } from './openai.validation'
+import Page from '../Page/page.model'
+import Post from '../Post/post.model'
+
+interface OpenAIRequest {
+  content?: string
+  title?: string
+  prompt?: string
+}
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-const OpenAIService = {
-  getPage: async (req: Express.Request, res: Express.Response) => {
-    const response = await openai.chat.completions.create({
+export const OpenAIService = {
+  generatePageContent: async (
+    req: Express.Request<undefined, OpenAIRequest>,
+    res: Express.Response
+  ) => {
+    const { prompt, title, content } = req.body
+
+    const [error, normalizedPrompt] = normalizePrompts(
+      { title, sysPrompt: prompts.postPrompt, content, prompt },
+      res
+    )
+    if (error || !normalizedPrompt) {
+      return res.status(400).send(error)
+    }
+
+    const { systemPrompt, userPrompt, currentPromptLength } = normalizedPrompt
+
+    try {
+      const entities = await Page.findAll()
+      const context = OpenAIService.createContext(entities, currentPromptLength)
+
+      const response = await OpenAIService.promptOpenAI({
+        systemPrompt,
+        userPrompt,
+        context,
+      })
+
+      console.log(response.choices[0].message.content)
+      return res.send({
+        content: response.choices[0].message.content,
+      })
+    } catch {
+      return res.status(502).send({
+        message:
+          'Error generating page content. Try again & maybe change prompt / content.',
+      })
+    }
+  },
+
+  generatePostContent: async (
+    req: Express.Request<undefined, OpenAIRequest>,
+    res: Express.Response
+  ) => {
+    const { prompt, title, content } = req.body
+
+    const [error, normalizedPrompt] = normalizePrompts(
+      { title, sysPrompt: prompts.postPrompt, content, prompt },
+      res
+    )
+    if (error || !normalizedPrompt) {
+      return res.status(400).send(error)
+    }
+
+    const { systemPrompt, userPrompt, currentPromptLength } = normalizedPrompt
+
+    try {
+      const entities = await Post.findAll()
+      const context = OpenAIService.createContext(entities, currentPromptLength)
+
+      const response = await OpenAIService.promptOpenAI({
+        systemPrompt,
+        userPrompt,
+        context,
+      })
+
+      console.log(response.choices[0].message.content)
+      return res.send({
+        content: response.choices[0].message.content,
+      })
+    } catch {
+      return res.status(502).send({
+        message:
+          'Error generating page content. Try again & maybe change prompt / content.',
+      })
+    }
+  },
+
+  promptOpenAI: async ({
+    systemPrompt,
+    userPrompt,
+    context,
+  }: {
+    systemPrompt: string
+    userPrompt: string
+    context: string
+  }) =>
+    await openai.chat.completions.create({
       model: 'gpt-4-turbo',
       messages: [
         {
           role: 'system',
-          content:
-            'You are HTML website generator. You are only allowed to answer in fully valid HTML. You can be fed with CSS or other HTML pages. in that case you have to respect the web page style. You will be given User prompt that will describe a web page that you will generate.\n\nALL CSS that you are using must be included in style tag in the HTML you are generating! Either inlined or in the header! This is important.\n\nImportant: somewhere in the website that you are generating there will be <div id="comment-section"></div>\n\nThis comment section will be included programatically later. so just put it somewhere logical. there will be just added some comment section later.\n\nprevious generation:\n',
+          content: `${systemPrompt}${context}`,
         },
         {
           role: 'user',
-          content:
-            'Create a welcoming webpage for my Obsidian Studio. We are game developers. Focusing on simulators and such.',
+          content: userPrompt,
         },
       ],
       temperature: 1,
@@ -27,6 +119,26 @@ const OpenAIService = {
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
-    })
+    }),
+
+  createContext: <T>(
+    entities: Array<{ content: string }>,
+    currentPromptLength: number
+  ): string => {
+    let currentContext = ''
+    let previousContext = currentContext
+    for (const entity of entities) {
+      currentContext += `Another Page: ${entity.content}`
+
+      if (
+        openaiTokenCounter.text(currentContext, 'gpt-4') + currentPromptLength >
+        2500
+      ) {
+        return previousContext
+      }
+      previousContext = currentContext
+    }
+
+    return currentContext
   },
 }
