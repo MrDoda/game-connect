@@ -41,8 +41,15 @@ MenuItem.init(
       allowNull: true,
       validate: {
         len: [0, 255],
-        isString: isStringValidation,
+        isString: (value: any) => {
+          if (!value) return true
+          if (typeof value !== 'string')
+            throw new Error(
+              'Validation failed given property must be a string!'
+            )
+        },
         isUrlPath: (value: any) => {
+          if (!value) return true
           if (!/^\/[A-Za-z0-9\-_\/]*$/.test(value))
             throw new Error(
               'URL path is invalid. Only alphanumeric characters, hyphens, underscores, and slashes are allowed.'
