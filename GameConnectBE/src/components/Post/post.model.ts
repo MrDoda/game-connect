@@ -1,7 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
-import User from '../User/user.model'
-import Page from '../Page/page.model'
 import { Database } from '../../config/database'
+import { isStringValidation } from '../../utils/isStringValidation'
 
 class Post extends Model {
   public id!: number
@@ -22,10 +21,18 @@ Post.init(
     title: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      validate: {
+        len: [0, 255],
+        isString: isStringValidation,
+      },
     },
     content: {
       type: DataTypes.TEXT('long'),
       allowNull: false,
+      validate: {
+        len: [0, 4294967295],
+        isString: isStringValidation,
+      },
     },
     ownerId: {
       type: DataTypes.INTEGER.UNSIGNED,

@@ -1,5 +1,4 @@
 import { Model, DataTypes } from 'sequelize'
-import User from '../User/user.model'
 import { Database } from '../../config/database'
 
 class Comment extends Model {

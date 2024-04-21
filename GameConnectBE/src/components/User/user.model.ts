@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { Database } from '../../config/database'
+import { isStringValidation } from '../../utils/isStringValidation'
 
 class User extends Model {
   public id!: number
@@ -23,9 +24,7 @@ User.init(
       allowNull: false,
       validate: {
         len: [0, 255],
-        isString: (value: any) => {
-          if (typeof value === 'string') throw new Error('URL must be a string')
-        },
+        isString: isStringValidation,
       },
     },
     email: {
@@ -34,9 +33,7 @@ User.init(
       unique: true,
       validate: {
         len: [0, 255],
-        isString: (value: any) => {
-          if (typeof value === 'string') throw new Error('URL must be a string')
-        },
+        isString: isStringValidation,
         isEmail: true,
       },
     },
@@ -45,9 +42,7 @@ User.init(
       allowNull: false,
       validate: {
         len: [0, 255],
-        isString: (value: any) => {
-          if (typeof value === 'string') throw new Error('URL must be a string')
-        },
+        isString: isStringValidation,
       },
     },
     role: {
@@ -55,9 +50,6 @@ User.init(
       allowNull: true,
       validate: {
         len: [0, 255],
-        isString: (value: any) => {
-          if (typeof value === 'string') throw new Error('URL must be a string')
-        },
       },
     },
     created: {

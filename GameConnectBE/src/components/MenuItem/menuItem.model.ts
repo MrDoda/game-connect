@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { Database } from '../../config/database'
+import { isStringValidation } from '../../utils/isStringValidation'
 
 class MenuItem extends Model {
   public id!: number
@@ -38,18 +39,39 @@ MenuItem.init(
     customUrl: {
       type: DataTypes.STRING(255),
       allowNull: true,
+      validate: {
+        len: [0, 255],
+        isString: isStringValidation,
+        isUrlPath: (value: any) => {
+          if (!/^\/[A-Za-z0-9\-_\/]*$/.test(value))
+            throw new Error(
+              'URL path is invalid. Only alphanumeric characters, hyphens, underscores, and slashes are allowed.'
+            )
+        },
+      },
     },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      validate: {
+        len: [0, 255],
+        isString: isStringValidation,
+      },
     },
     menuLocation: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      validate: {
+        len: [0, 255],
+        isString: isStringValidation,
+      },
     },
     orderNumber: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        len: [0, 255],
+      },
     },
     created: {
       type: DataTypes.DATE,
