@@ -26,6 +26,7 @@ export const AdminLayout = ({ children, userName = 'Test user' }) => {
 
   const drawer = (
     <Box sx={{ overflow: 'auto' }}>
+      {mobileOpen && <Box sx={{ height: 48 }}></Box>}
       <List>
         <ListItem
           button
@@ -81,7 +82,6 @@ export const AdminLayout = ({ children, userName = 'Test user' }) => {
         }}
         sx={{
           display: { xs: 'block', sm: 'none' },
-          top: '56px',
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
         }}
       >
