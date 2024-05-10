@@ -2,6 +2,7 @@ import React from 'react'
 import './App.css'
 import { Router } from './Router.jsx'
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
+import { Alerts } from './components/Alerts.jsx'
 
 export const themeOptions = {
   palette: {
@@ -23,6 +24,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router />
+      <Alerts />
     </ThemeProvider>
   )
 }

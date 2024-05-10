@@ -1,5 +1,5 @@
-import { DangerousPage } from '../components/DangerousPage.jsx'
+import { DangerousPost } from '../components/DangerousPost.jsx'
 
 export const Post = () => {
-  return <DangerousPage />
+  return <DangerousPost />
 }

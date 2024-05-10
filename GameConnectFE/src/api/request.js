@@ -1,4 +1,11 @@
-export async function request(path, data, method = 'POST') {
+import { appStore } from '../store/appStore.js'
+
+export async function request(
+  path,
+  data,
+  method = 'POST',
+  token = appStore.getState().token
+) {
   const apiUrl = import.meta.env.VITE_API_URL
   const fullUrl = `${apiUrl}/${path}`
 
@@ -7,6 +14,7 @@ export async function request(path, data, method = 'POST') {
       method,
       headers: {
         'Content-Type': 'application/json',
+        'x-authenticate': token || '',
       },
     }
 

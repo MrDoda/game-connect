@@ -47,6 +47,22 @@ export const Router = () => {
             </AdminRoute>
           }
         />
+        <Route
+          path="/admin/post-edit/:id"
+          element={
+            <AdminRoute>
+              <AdminPost />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/page-edit/:id"
+          element={
+            <AdminRoute>
+              <AdminPage />
+            </AdminRoute>
+          }
+        />
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/post/:id" element={<Post />} />
         <Route path="/:pageUrl" element={<Page />} />
