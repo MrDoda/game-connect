@@ -12,6 +12,16 @@ export const usePostApi = () => {
     return result
   }
 
+  const deletePost = async (postId) => {
+    const [error, result] = await request(`post/${postId}`, undefined, 'DELETE')
+    if (error) {
+      console.error('Error deleting post:', error)
+      addAlert({ key: 'delete-post', message: error.message })
+      return null
+    }
+    return result
+  }
+
   const getPosts = async () => {
     const [error, result] = await request('post', undefined, 'GET')
     if (error) {
@@ -46,10 +56,22 @@ export const usePostApi = () => {
     return result
   }
 
+  const updatePost = async (postId, data) => {
+    const [error, result] = await request(`post/${postId}`, data, 'PATCH')
+    if (error) {
+      console.error(`Error updating post ${postId}:`, error)
+      addAlert({ key: 'update-post', message: error.message })
+      return null
+    }
+    return result
+  }
+
   return {
     createPost,
     getPosts,
     getPostsByPageId,
     getPostById,
+    deletePost,
+    updatePost,
   }
 }

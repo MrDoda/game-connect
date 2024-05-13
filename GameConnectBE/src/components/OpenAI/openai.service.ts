@@ -23,15 +23,6 @@ export const OpenAIService = {
   ) => {
     const { prompt, title, content } = req.body
 
-    /*let p = true
-
-    p = await new Promise((resolve) =>
-      setTimeout(() => {
-        resolve(false)
-      }, 5000)
-    )
-    if (!p) return res.status(200).send({ message: 'Timeout' })*/
-
     const [error, normalizedPrompt] = normalizePrompts(
       { title, sysPrompt: prompts.pagePrompt, content, prompt },
       res

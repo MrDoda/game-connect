@@ -5,9 +5,6 @@ import { usePageApi } from '../hooks/usePageApi.js'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { GeneratedMenu } from './GeneratedMenu.jsx'
 
-let reactRoot = null
-let reactRootMenu = null
-
 export const DangerousPage = () => {
   const [page, setPage] = useState()
   const location = useLocation()

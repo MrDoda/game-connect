@@ -1,5 +1,8 @@
 import Post from './post.model'
 import type Express from 'express'
+import Page from '../Page/page.model'
+import { ValidationError } from 'sequelize'
+import { getErrorMessageFromSequelize } from '../../utils/getErrorMessageFromSequelize'
 
 export const PostService = {
   createPost: async (req: Express.Request, res: Express.Response) => {
@@ -19,6 +22,18 @@ export const PostService = {
     } catch (error) {
       console.error('[ERROR] Failed to create post:', error)
       return res.status(500).send({ message: 'Failed to create post' })
+    }
+  },
+
+  deletePost: async (req: Express.Request, res: Express.Response) => {
+    try {
+      const postId = parseInt(req.params.postId)
+      await Post.destroy({ where: { id: postId } })
+
+      return res.status(200).send({ message: 'Post deleted' })
+    } catch (error: ValidationError | any) {
+      console.error('[ERROR] Unable to delete post:', error)
+      return res.status(400).send(getErrorMessageFromSequelize(error))
     }
   },
 
@@ -85,6 +100,25 @@ export const PostService = {
     } catch (error) {
       console.error('[ERROR] Failed to retrieve post by ID:', error)
       return res.status(500).send({ message: 'Error retrieving post by ID' })
+    }
+  },
+
+  updatePost: async (req: Express.Request, res: Express.Response) => {
+    try {
+      const postId = parseInt(req.params.postId)
+      const { content, title, pageId } = req.body
+      const post = await Post.findByPk(postId)
+      if (!post) {
+        return res.status(404).send({ message: 'Post not found' })
+      }
+      post.content = content
+      post.title = title
+      post.pageId = pageId
+      await post.save()
+      return res.send(post)
+    } catch (error: ValidationError | any) {
+      console.error('[ERROR] Unable to update post:', error)
+      return res.status(500).send(getErrorMessageFromSequelize(error))
     }
   },
 }

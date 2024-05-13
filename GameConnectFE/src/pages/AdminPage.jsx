@@ -37,7 +37,7 @@ export function AdminPage({ editedPage = {}, pageId = null }) {
   })
 
   const { generatePageContent } = useOpenAiApi()
-  const { createPage, getPages } = usePageApi()
+  const { createPage, getPages, updatePage } = usePageApi()
   const navigate = useNavigate()
 
   const handleModeChange = (event, newMode) => {
@@ -68,6 +68,11 @@ export function AdminPage({ editedPage = {}, pageId = null }) {
   }
 
   const handlePublish = async () => {
+    if (pageId) {
+      await updatePage(pageId, page)
+      navigate(page.url)
+      return
+    }
     const createdPage = await createPage(page)
     createdPage && navigate(page.url)
   }

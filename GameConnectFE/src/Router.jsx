@@ -9,6 +9,8 @@ import { Admin } from './pages/Admin.jsx'
 import { useStore } from './store/useStore.js'
 import { appStore } from './store/appStore.js'
 import { Home } from './pages/Home.jsx'
+import { AdminPageEdit } from './pages/AdminPageEdit.jsx'
+import { AdminPostEdit } from './pages/AdminPostEdit.jsx'
 
 const AdminRoute = ({ children }) => {
   const token = useStore(appStore, 'token')
@@ -51,7 +53,7 @@ export const Router = () => {
           path="/admin/post-edit/:id"
           element={
             <AdminRoute>
-              <AdminPost />
+              <AdminPostEdit />
             </AdminRoute>
           }
         />
@@ -59,7 +61,7 @@ export const Router = () => {
           path="/admin/page-edit/:id"
           element={
             <AdminRoute>
-              <AdminPage />
+              <AdminPageEdit />
             </AdminRoute>
           }
         />

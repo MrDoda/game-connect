@@ -29,6 +29,7 @@ export function Alerts() {
       open={open}
       autoHideDuration={5000}
       onClose={handleClose}
+      variant="filled"
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       sx={{ margin: '30px' }}
     >

@@ -12,13 +12,14 @@ import {
   IconButton,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const drawerWidth = 240
 
 export const AdminLayout = ({ children, userName = 'Test user' }) => {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -64,7 +65,13 @@ export const AdminLayout = ({ children, userName = 'Test user' }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            style={{ cursor: 'pointer' }}
+            onClick={() => navigate('/admin')}
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
             Admin Panel
           </Typography>
           <Avatar alt={userName} src="/static/images/avatar/1.jpg" />

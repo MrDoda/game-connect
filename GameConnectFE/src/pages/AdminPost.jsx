@@ -35,7 +35,7 @@ export function AdminPost({ editedPost = {}, postId = null }) {
   })
 
   const { generatePostContent } = useOpenAiApi()
-  const { createPost } = usePostApi()
+  const { createPost, updatePost } = usePostApi()
   const { getPages } = usePageApi()
   const navigate = useNavigate()
 
@@ -66,6 +66,10 @@ export function AdminPost({ editedPost = {}, postId = null }) {
   }
 
   const handlePublish = async () => {
+    if (postId) {
+      const updatedPost = await updatePost(postId, post)
+      updatedPost && navigate(`/post/${updatedPost.id}`)
+    }
     const createdPost = await createPost(post)
     createdPost && navigate(`/post/${createdPost.id}`)
   }

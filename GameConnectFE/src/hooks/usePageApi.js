@@ -12,6 +12,26 @@ export const usePageApi = () => {
     return result
   }
 
+  const deletePage = async (pageId) => {
+    const [error, result] = await request(`page/${pageId}`, undefined, 'DELETE')
+    if (error) {
+      console.error('Error deleting page:', error)
+      addAlert({ key: 'delete-page', message: error.message })
+      return null
+    }
+    return result
+  }
+
+  const getPageById = async (pageId) => {
+    const [error, result] = await request(`page/${pageId}`, undefined, 'GET')
+    if (error) {
+      console.error(`Error fetching page by ID ${pageId}:`, error)
+      addAlert({ key: 'get-page-by-id', message: error.message })
+      return null
+    }
+    return result
+  }
+
   const getPages = async () => {
     const [error, result] = await request('page', undefined, 'GET')
     if (error) {
@@ -36,9 +56,22 @@ export const usePageApi = () => {
     return result
   }
 
+  const updatePage = async (pageId, data) => {
+    const [error, result] = await request(`page/${pageId}`, data, 'PATCH')
+    if (error) {
+      console.error(`Error updating page by ID ${pageId}:`, error)
+      addAlert({ key: 'update-page', message: error.message })
+      return null
+    }
+    return result
+  }
+
   return {
     createPage,
     getPages,
     getPageByURL,
+    deletePage,
+    getPageById,
+    updatePage,
   }
 }
